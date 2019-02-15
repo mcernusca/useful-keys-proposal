@@ -103,7 +103,6 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
     return tabbable(canvasRef.current)[0] || canvasRef.current
   }
   const containFocus = function(event) {
-    console.log(isDragging)
     if (
       isDragging &&
       canvasRef.current &&

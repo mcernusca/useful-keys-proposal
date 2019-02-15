@@ -19,7 +19,7 @@ function App() {
             <h1>usefulKeys</h1>
             <p>
               Keyboard events as values for React. Proposal for an alternative
-              to key event callback hook APIs.
+              to event callback hook APIs.
             </p>
           </section>
           <section>
@@ -69,7 +69,9 @@ function App() {
             <p className="bubble">
               <span role="img">🤔</span> What's wrong with event callbacks?
             </p>
-            <p>Callbacks work fine, but they can feel wrong. </p>
+            <p>
+              Callbacks work fine, but they can <em>feel wrong</em>.{' '}
+            </p>
             <p>
               Conceptually, on every render my component wants to query the
               state of its world with fresh eyes and make decisions about what
@@ -79,13 +81,14 @@ function App() {
             </p>
             <p>
               Hooks as an abstraction allow us to push these kinds of external
-              details to the periphery (which also makes them very reusable,
-              yay!) keeping our render code noise free. It lets us pretend the
-              component's world is much simpler than it really is. Proxying an
-              event callback through a hook stops short of fulfilling its
-              potential. It might be a good idea to build higher abstractions on
-              top that expose the details that matter to our component as values
-              (where it makes sense! lower level hooks are totally ok).
+              details to the periphery{' '}
+              <em>(which also makes them very reusable, yay!)</em> keeping our
+              render code noise free. It lets us pretend the component's world
+              is much simpler than it really is. Proxying an event callback
+              through a hook stops short of fulfilling its potential. It might
+              be a good idea to build higher abstractions on top that expose the
+              details that matter to our component as values
+              <em>(where it makes sense! lower level hooks are totally ok)</em>.
             </p>
           </section>
 
@@ -112,6 +115,35 @@ function App() {
               </a>
               .
             </p>
+          </section>
+
+          <section>
+            <p>Links:</p>
+            <ul>
+              <li>
+                <p>
+                  <span role="img">⭐</span>{' '}
+                  <a href="https://github.com/mcernusca/useful-keys">
+                    github/useful-keys
+                  </a>
+                </p>
+              </li>
+              <li>
+                <p>
+                  <span role="img">🏖️</span>{' '}
+                  <a href="">codesandbox/playground</a> try it out
+                </p>
+              </li>
+              <li>
+                <p>
+                  <span role="img">🏖️</span>{' '}
+                  <a href="https://codesandbox.io/s/wypw3x7o5">
+                    codesandbox/meta
+                  </a>{' '}
+                  this website
+                </p>
+              </li>
+            </ul>
           </section>
 
           <section>

@@ -22,11 +22,11 @@ export default function GridDemo() {
   dim = Math.min(dim, avHeight)
   dim = Math.round(dim / rc) * rc
   const x = (Math.round(cappedWith / 2) - dim) / 2
-  const y = topMargin
+  const y = 0
 
   return (
     <div>
-      <GridApp x={x} y={0} w={dim} h={dim} rows={rc} cols={rc} />
+      <GridApp x={x} y={y} w={dim} h={dim} rows={rc} cols={rc} />
       <KeyboardWrapper>
         <KeyboardDemo />
       </KeyboardWrapper>
