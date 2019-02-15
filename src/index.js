@@ -60,7 +60,7 @@ function App() {
               </mark>
             </p>
             <p>
-              In practice this isn't a big deal as you can always capture the
+              In practice, this isn't a big deal as you can always capture the
               value if you need in more than one place.
             </p>
           </section>
@@ -69,12 +69,13 @@ function App() {
             <p className="bubble">
               <span role="img">🤔</span> What's wrong with event callbacks?
             </p>
+            <p>Callbacks work fine, but they can feel wrong. </p>
             <p>
-              Callbacks work fine, but they can feel wrong. Conceptually, on
-              every render my component wants to query the state of its world
-              with fresh eyes and make decisions about what it should render.
-              Callbacks are one way to subscribe to outside changes and in
-              return ultimately influence the component or application state.
+              Conceptually, on every render my component wants to query the
+              state of its world with fresh eyes and make decisions about what
+              it should render. Callbacks are one way to subscribe to outside
+              changes and in return ultimately influence the component or
+              application state.
             </p>
             <p>
               Hooks as an abstraction allow us to push these kinds of external
@@ -97,8 +98,8 @@ function App() {
               <a href="https://github.com/mcernusca/useful-keys">
                 reference implementation
               </a>{' '}
-              is good enough to meet my needs for these small demos but it is
-              not feature complete. If you're doing more than playing you might
+              is good enough to meet my needs for these small demos but it isn't
+              yet feature-complete. If you're doing more than playing you might
               consider wrapping a more{' '}
               <a href="https://craig.is/killing/mice">mature</a>{' '}
               <a href="https://github.com/jaywcjlove/hotkeys">library</a> in a
@@ -114,7 +115,7 @@ function App() {
           </section>
 
           <section>
-            <p>Inspiration and further reading</p>
+            <p>Inspiration and further reading:</p>
             <ul>
               <li>
                 <p>
@@ -122,7 +123,7 @@ function App() {
                   <a href="https://github.com/react-spring/react-with-gesture">
                     useGesture
                   </a>{' '}
-                  - is the original inspiration althrough in most cases you'd
+                  - is the original inspiration although in most cases you'd
                   want to use the callback API and not re-render your component
                   on every event. Use this, build higher abstractions on top. It
                   is brilliant.
