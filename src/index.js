@@ -133,7 +133,10 @@ function App() {
               <li>
                 <p>
                   <span role="img">🏖️</span>{' '}
-                  <a href="">codesandbox/playground</a> try it out
+                  <a href="https://codesandbox.io/s/n4o5z6yk3l">
+                    codesandbox/example
+                  </a>{' '}
+                  try it out
                 </p>
               </li>
               <li>
