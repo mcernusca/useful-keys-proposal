@@ -79,36 +79,23 @@ function App() {
               </p>
             </div>
             <p>
-              Callbacks work fine, but they can <em>feel wrong</em>.{' '}
+              Callbacks are fine until you want to base your render logic on the
+              state of the keyboard. This is an experiment to try to make key
+              states stateful but still preserve the semantics of the key up and
+              down events.
             </p>
             <p>
-              Conceptually, on every render my component wants to query the
-              state of its world with fresh eyes and make decisions about what
-              it should render. Callbacks are one way to subscribe to outside
-              changes and in return ultimately influence the component or
-              application state.
-            </p>
-            <p>
-              Hooks as an abstraction allow us to push these kinds of external
-              details to the periphery{' '}
-              <em>(which also makes them very reusable, yay!)</em> keeping our
-              render code noise free. It lets us pretend the component's world
-              is much simpler than it really is.{' '}
-            </p>
-            <p>
-              Proxying an event callback through a hook stops short of
-              fulfilling its potential. It might be a good idea to build higher
-              abstractions on top that expose the details that matter to our
-              component as values{' '}
-              <em>(where it makes sense! lower level hooks are totally ok)</em>.
+              Hooks allow us to push external details like callbacks to the
+              periphery <em>(which also makes them very reusable, yay!)</em>{' '}
+              keeping our render code noise free. It lets us pretend the
+              component's world is much simpler than it really is.
             </p>
           </section>
 
           <section>
             <div className="bubble-wrapper">
               <p className="bubble">
-                <span role="img">🤔</span> Sorry I asked. Is it production
-                ready?
+                <span role="img">🤔</span>Can I use it?
               </p>
             </div>
             <p>
@@ -116,9 +103,9 @@ function App() {
               <a href="https://github.com/mcernusca/useful-keys">
                 reference implementation
               </a>{' '}
-              is good enough to meet my needs for these small demos but it isn't
-              yet feature-complete. If you're doing more than playing you might
-              consider wrapping a more{' '}
+              is self-contained and good enough to meet my needs for these small
+              demos but it isn't yet feature-complete. If you're doing more than
+              playing you might consider wrapping a more{' '}
               <a href="https://craig.is/killing/mice">mature</a>{' '}
               <a href="https://github.com/jaywcjlove/hotkeys">library</a> in a
               similar hook.
@@ -170,10 +157,7 @@ function App() {
                   <a href="https://github.com/react-spring/react-with-gesture">
                     useGesture
                   </a>{' '}
-                  - is the original inspiration although in most cases you'd
-                  want to use the callback API and not re-render your component
-                  on every event. Use this, build higher abstractions on top. It
-                  is brilliant.
+                  - is the original inspiration. Use this, it is really good.
                 </p>
               </li>
               <li>
@@ -182,23 +166,18 @@ function App() {
                   <a href="https://twitter.com/dan_abramov/status/1058508853216755713">
                     debug UI thread on Twitter
                   </a>{' '}
-                  - a lot to unpack there but notice we care about the value as
-                  it changes, not the change event. Subtle but important
-                  difference.
+                  - notice we care about the value as it changes, not the change
+                  event. Subtle but important difference.
                 </p>
               </li>
               <li>
                 <p>
-                  Graphics programming environments and game engines like Unity
-                  expose APIs like{' '}
+                  Game engines like Unity expose APIs like{' '}
                   <a href="https://docs.unity3d.com/ScriptReference/Input.GetKeyDown.html">
                     Input.GetKeyDown
                   </a>{' '}
-                  that represent the state of the keys at a particular frame.
-                  This is easier to do in these environments because they're
-                  re-rendering 60 times per second and it isn't entirely
-                  applicable to React. I'm curating a list of resources on
-                  immediate mode GUIs{' '}
+                  that represent the state of the keys at a particular frame. I
+                  have a channel about immediate mode GUIs{' '}
                   <a href="https://www.are.na/mihai-cernusca/immediate-mode-guis">
                     on are.na
                   </a>{' '}
