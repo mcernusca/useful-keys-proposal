@@ -23,9 +23,12 @@ function App() {
             </p>
           </section>
           <section>
-            <p className="bubble">
-              <span role="img">🔑</span> What?
-            </p>
+            <div className="bubble-wrapper">
+              <p className="bubble">
+                <span role="img">🔑</span> What?
+              </p>
+            </div>
+            <p>For example:</p>
             <pre>
               <code>{`const { asd } = usefulKeys({ asd: 'a+s+d' })`}</code>
             </pre>
@@ -34,16 +37,19 @@ function App() {
               shape. The values are state objects with three boolean properties:{' '}
               <code>pressed</code>, <code className="special">down</code> and{' '}
               <code className="special">up</code>. Your component will re-render
-              only when a rule starts or stops matching:
+              only when a rule starts or stops matching. Try it:
             </p>
 
             <ASDDemo />
           </section>
 
           <section>
-            <p className="bubble">
-              <span role="img">🤔</span> Cool, couldn't that deadlock?
-            </p>
+            <div className="bubble-wrapper">
+              <p className="bubble">
+                <span role="img">🤔</span> Cool, couldn't that deadlock?
+              </p>
+            </div>
+            <p>You mean like:</p>
             <pre>
               <code>{`if (asd.down) setState(true) // forever?`}</code>
             </pre>
@@ -53,7 +59,8 @@ function App() {
               rule matches, <code className="special">down</code> and{' '}
               <code className="special">up</code> are special and will only
               return <code>true</code> <mark>once</mark> which guarantees that
-              they return false the next time the component re-renders.{' '}
+              they return <code>false</code> the next time the component
+              re-renders.{' '}
               <mark>
                 This is the equivalent of an event callback —{' '}
                 <em>you read it, consider yourself notified.</em>
@@ -66,9 +73,11 @@ function App() {
           </section>
 
           <section>
-            <p className="bubble">
-              <span role="img">🤔</span> What's wrong with event callbacks?
-            </p>
+            <div className="bubble-wrapper">
+              <p className="bubble">
+                <span role="img">🤔</span> What's wrong with event callbacks?
+              </p>
+            </div>
             <p>
               Callbacks work fine, but they can <em>feel wrong</em>.{' '}
             </p>
@@ -84,20 +93,26 @@ function App() {
               details to the periphery{' '}
               <em>(which also makes them very reusable, yay!)</em> keeping our
               render code noise free. It lets us pretend the component's world
-              is much simpler than it really is. Proxying an event callback
-              through a hook stops short of fulfilling its potential. It might
-              be a good idea to build higher abstractions on top that expose the
-              details that matter to our component as values
+              is much simpler than it really is.{' '}
+            </p>
+            <p>
+              Proxying an event callback through a hook stops short of
+              fulfilling its potential. It might be a good idea to build higher
+              abstractions on top that expose the details that matter to our
+              component as values{' '}
               <em>(where it makes sense! lower level hooks are totally ok)</em>.
             </p>
           </section>
 
           <section>
-            <p className="bubble">
-              <span role="img">🤔</span> That's it?
-            </p>
+            <div className="bubble-wrapper">
+              <p className="bubble">
+                <span role="img">🤔</span> Sorry I asked. Is it production
+                ready?
+              </p>
+            </div>
             <p>
-              This is it. The{' '}
+              The{' '}
               <a href="https://github.com/mcernusca/useful-keys">
                 reference implementation
               </a>{' '}
