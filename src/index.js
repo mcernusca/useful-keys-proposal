@@ -30,7 +30,7 @@ function App() {
             </div>
             <p>For example:</p>
             <pre>
-              <code>{`const { asd } = usefulKeys({ asd: 'a+s+d' })`}</code>
+              <code>{`const { asd } = useKeyState({ asd: 'a+s+d' })`}</code>
             </pre>
             <p>
               Pass it a map of hotkey rules and it hands back one of the same
@@ -100,7 +100,7 @@ function App() {
             </div>
             <p>
               The{' '}
-              <a href="https://github.com/mcernusca/useful-keys">
+              <a href="https://github.com/mcernusca/use-key-state">
                 reference implementation
               </a>{' '}
               is self-contained and good enough to meet my needs for these small
@@ -125,8 +125,8 @@ function App() {
               <li>
                 <p>
                   <span role="img">⭐</span>{' '}
-                  <a href="https://github.com/mcernusca/useful-keys">
-                    github/useful-keys
+                  <a href="https://github.com/mcernusca/use-key-state">
+                    github/use-key-state
                   </a>
                 </p>
               </li>
