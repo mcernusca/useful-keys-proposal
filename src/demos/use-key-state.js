@@ -157,7 +157,7 @@ const defaultConfig = {
   keyRepeat: true
 }
 
-export const usefulKeys = function(rulesMap, config = defaultConfig) {
+export const useKeyState = function(rulesMap, config = defaultConfig) {
   // Query live key state and some common key utility fns:
   const query = React.useMemo(
     () => ({
@@ -236,8 +236,10 @@ export const usefulKeys = function(rulesMap, config = defaultConfig) {
       handleUp(event)
       return
     }
-    keyMap.current[event.which] = true
-    updateState()
+    if (!keyMap.current[event.which]) {
+      keyMap.current[event.which] = true
+      updateState()
+    }
   }
 
   const handleUp = event => {
@@ -256,3 +258,5 @@ export const usefulKeys = function(rulesMap, config = defaultConfig) {
 
   return state
 }
+
+export default useKeyState

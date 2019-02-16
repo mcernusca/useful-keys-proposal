@@ -16,7 +16,7 @@ function App() {
       <main>
         <div className="page">
           <section>
-            <h1>usefulKeys</h1>
+            <h1>useKeyState</h1>
             <p>
               Keyboard events as values for React. Proposal for an alternative
               to event callback hook APIs.

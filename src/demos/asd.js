@@ -1,7 +1,7 @@
 import React from 'react'
 import cx from 'classnames'
 import { useInterval } from './use-interval'
-import { usefulKeys } from './useful-keys'
+import { useKeyState } from './use-key-state'
 
 const FrameBool = function(frame, active) {
   return {
@@ -16,7 +16,7 @@ export default function ASD() {
   let [isDown, setDown] = React.useState(false)
   let [isUp, setUp] = React.useState(false)
 
-  const { a, s, d, asd } = usefulKeys(
+  const { a, s, d, asd } = useKeyState(
     {
       a: 'a',
       s: 's',

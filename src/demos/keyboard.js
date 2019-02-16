@@ -1,9 +1,9 @@
 import React from 'react'
 import cx from 'classnames'
-import { usefulKeys } from './useful-keys'
+import { useKeyState } from './use-key-state'
 
 export default function ASD() {
-  const { esc, tab, shift, left, up, down, right, enter } = usefulKeys(
+  const { esc, tab, shift, left, up, down, right, enter } = useKeyState(
     {
       esc: 'esc',
       tab: 'tab',

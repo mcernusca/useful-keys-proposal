@@ -15,7 +15,7 @@ import {
 import cx from 'classnames'
 import { useResizeHandles } from './resize-handles.js'
 import { useEventCallback } from './use-event-callback'
-import { usefulKeys } from '../useful-keys'
+import { useKeyState } from '../use-key-state'
 import tabbable from 'tabbable'
 
 const SPRING_CONFIG = { friction: 50, tension: 500 }
@@ -155,7 +155,7 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
     rightArrow,
     enter,
     shift
-  } = usefulKeys({
+  } = useKeyState({
     esc: 'esc',
     upArrow: 'up,capture',
     downArrow: 'down,capture',
