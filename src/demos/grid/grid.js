@@ -309,7 +309,6 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
       <RelativeWrapper>
         {React.Children.map(children, (child, i) => {
           const animChildProps = animProps[i]
-          console.log(animChildProps.cursor.getValue())
           return (
             <>
               <StickyShadow
@@ -328,7 +327,7 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
                 tabIndex={0}
                 style={{
                   position: 'absolute',
-                  cursor: animChildProps.cursor.getValue(),
+                  cursor: animChildProps.cursor.interpolate(cursor => cursor),
                   ...interpolateStyles(
                     animChildProps.size,
                     animChildProps.origin
