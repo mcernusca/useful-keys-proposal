@@ -18,8 +18,8 @@ function App() {
           <section>
             <h1>useKeyState</h1>
             <p>
-              Keyboard events as values for React. Proposal for an alternative
-              to event callback hook APIs.
+              Keyboard events as data for React. Proposal for an alternative to
+              event callback hook APIs.
             </p>
           </section>
           <section>
@@ -95,7 +95,7 @@ function App() {
           <section>
             <div className="bubble-wrapper">
               <p className="bubble">
-                <span role="img">🤔</span>Can I use it?
+                <span role="img">🤔</span>Where do I start?
               </p>
             </div>
             <p>
@@ -105,9 +105,7 @@ function App() {
               </a>{' '}
               is self-contained and good enough to meet my needs for these small
               demos but it isn't yet feature-complete. If you're doing more than
-              playing you might consider wrapping a more{' '}
-              <a href="https://craig.is/killing/mice">mature</a>{' '}
-              <a href="https://github.com/jaywcjlove/hotkeys">library</a> in a
+              playing you might consider wrapping a library you trust in a
               similar hook.
             </p>
             <p>
@@ -117,6 +115,10 @@ function App() {
               </a>
               .
             </p>
+          </section>
+
+          <section>
+            <p>————</p>
           </section>
 
           <section>

@@ -2,6 +2,9 @@ import React from 'react'
 import cx from 'classnames'
 import { useInterval } from './use-interval'
 import { useKeyState } from './use-key-state'
+import useAudio, { Play } from './use-audio'
+
+import CompleteMP3 from './asd/sounds/complete.mp3'
 
 const FrameBool = function(frame, active) {
   return {
@@ -10,11 +13,17 @@ const FrameBool = function(frame, active) {
   }
 }
 
+// Safari needs this to play our sounds w/o delay, ignore it
+const AudioContext = window.AudioContext || window.webkitAudioContext
+const ctx = new AudioContext()
+
 export default function ASD() {
   let [count, setCount] = React.useState(FrameBool(0, false))
   let [isPressed, setPressed] = React.useState(false)
   let [isDown, setDown] = React.useState(false)
   let [isUp, setUp] = React.useState(false)
+
+  const audio = useAudio(CompleteMP3)
 
   const { a, s, d, asd } = useKeyState(
     {
@@ -31,9 +40,16 @@ export default function ASD() {
   // state in a controlled loop:
 
   const capturedDown = React.useRef(false)
-  if (asd.down) capturedDown.current = true
+  if (asd.down) {
+    capturedDown.current = true
+
+    // play chirp
+    Play(audio)
+  }
   const capturedUp = React.useRef(false)
-  if (asd.up) capturedUp.current = true
+  if (asd.up) {
+    capturedUp.current = true
+  }
 
   useInterval(() => {
     setCount(count + 1)

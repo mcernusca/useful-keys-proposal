@@ -17,6 +17,13 @@ import { useResizeHandles } from './resize-handles.js'
 import { useEventCallback } from './use-event-callback'
 import { useKeyState } from '../use-key-state'
 import tabbable from 'tabbable'
+import useAudio, { Play } from '../use-audio'
+
+import FocusMP3 from './sounds/drop.mp3'
+import ResizeMP3 from './sounds/resize.mp3'
+import MoveWAV from './sounds/move.wav'
+import SlideFastLeftMP3 from './sounds/slide_fast_left.mp3'
+import SlideFastRightMP3 from './sounds/slide_fast_right.mp3'
 
 const SPRING_CONFIG = { friction: 50, tension: 500 }
 
@@ -26,6 +33,12 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
 
   const cellSize = gridSizeForContainerSize(frame.size, rows, cols)
   const childrenArr = React.Children.toArray(children)
+
+  const focusSound = useAudio(FocusMP3)
+  const resizeSound = useAudio(ResizeMP3)
+  const moveSound = useAudio(MoveWAV)
+  const slideFastLeftSound = useAudio(SlideFastLeftMP3)
+  const slideFastRightSound = useAudio(SlideFastRightMP3)
 
   // Springs
   const [animProps, set] = useSprings(childrenArr.length, index => {
@@ -84,6 +97,7 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
         )
 
         if (!down && (xDelta || yDelta)) {
+          Play(moveSound, 0.6)
           dispatch({
             type: 'move',
             index: index,
@@ -154,7 +168,8 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
     leftArrow,
     rightArrow,
     enter,
-    shift
+    shift,
+    tab
   } = useKeyState({
     esc: 'esc',
     upArrow: 'up,capture',
@@ -162,9 +177,13 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
     leftArrow: 'left,capture',
     rightArrow: 'right,capture',
     enter: 'enter',
-    shift: 'shift'
+    shift: 'shift',
+    tab: 'tab'
   })
 
+  // conditional capture?
+  // rightArrow: { keys: ['right', 'left'], capture: isDragging}
+  // filter?
   if (isDragging && focusKey !== null) {
     const index = focusKey
     const frame = childrenArr[index].props.frame
@@ -175,17 +194,24 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
       setIsDragging(false)
     } else {
       if (upArrow.down) {
+        shift.pressed ? Play(slideFastLeftSound, 0.6) : Play(moveSound, 0.6)
         newFrame = moveV(ammt, -1, newFrame, cols, rows)
       }
       if (downArrow.down) {
+        shift.pressed ? Play(slideFastRightSound, 0.6) : Play(moveSound, 0.6)
         newFrame = moveV(ammt, 1, newFrame, cols, rows)
       }
       if (leftArrow.down) {
+        shift.pressed ? Play(slideFastLeftSound, 0.6) : Play(moveSound, 0.6)
         newFrame = moveH(ammt, -1, newFrame, cols, rows)
       }
       if (rightArrow.down) {
+        shift.pressed ? Play(slideFastRightSound, 0.6) : Play(moveSound, 0.6)
         newFrame = moveH(ammt, 1, newFrame, cols, rows)
       }
+    }
+    if (tab.down) {
+      Play(focusSound, 0.9)
     }
 
     if (newFrame !== frame) {
@@ -229,6 +255,9 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
         )
 
         if (!down) {
+          if (wDelta || hDelta) {
+            Play(resizeSound, 0.6)
+          }
           dispatch({
             type: 'resize',
             index: index,
