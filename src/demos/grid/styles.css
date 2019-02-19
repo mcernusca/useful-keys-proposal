@@ -9,16 +9,11 @@
 }
 
 .grid-canvas .grid-item {
-  cursor: grab;
   outline: 0;
 }
 
 .grid-canvas .grid-item:focus-within .grid-window {
   border: 8px solid #000;
-}
-
-.grid-canvas.is-dragging .grid-item {
-  cursor: grabbing;
 }
 
 .grid-canvas .grid-item:nth-child(2) .grid-window {

@@ -45,6 +45,7 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
     const child = childrenArr[index]
     const childFrame = gridFrameToPxFrame(child.props.frame, cellSize)
     return {
+      cursor: 'grab',
       origin: childFrame.origin,
       originSnap: childFrame.origin,
       size: childFrame.size,
@@ -91,6 +92,7 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
           i =>
             index === i && {
               immediate: down,
+              cursor: down ? 'grabbing' : 'grab',
               origin: down ? _origin : _originSnap,
               originSnap: _originSnap
             }
@@ -307,6 +309,7 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
       <RelativeWrapper>
         {React.Children.map(children, (child, i) => {
           const animChildProps = animProps[i]
+          console.log(animChildProps.cursor.getValue())
           return (
             <>
               <StickyShadow
@@ -325,6 +328,7 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
                 tabIndex={0}
                 style={{
                   position: 'absolute',
+                  cursor: animChildProps.cursor.getValue(),
                   ...interpolateStyles(
                     animChildProps.size,
                     animChildProps.origin

@@ -35,10 +35,17 @@ function reducer(draft, action) {
 export default function GridApp({ x, y, w, h, rows, cols }) {
   const [state, dispatch] = useImmerReducer(reducer, initialState)
   return (
-    <Grid frame={Frame(x, y, w, h)} rows={rows} cols={cols} dispatch={dispatch}>
-      {state.frames.map((f, i) => (
-        <GridWindow frame={f} key={i} />
-      ))}
-    </Grid>
+    <React.StrictMode>
+      <Grid
+        frame={Frame(x, y, w, h)}
+        rows={rows}
+        cols={cols}
+        dispatch={dispatch}
+      >
+        {state.frames.map((f, i) => (
+          <GridWindow frame={f} key={i} />
+        ))}
+      </Grid>
+    </React.StrictMode>
   )
 }
