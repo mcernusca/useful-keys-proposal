@@ -30,7 +30,7 @@ function App() {
             </div>
             <p>For example:</p>
             <pre>
-              <code>{`const { asd } = useKeyState({ asd: 'a+s+d' })`}</code>
+              <code>{`const {asd} = useKeyState({asd:'a+s+d'})`}</code>
             </pre>
             <p>
               Pass it a map of hotkey rules and it hands back one of the same
@@ -46,17 +46,22 @@ function App() {
           <section>
             <div className="bubble-wrapper">
               <p className="bubble">
-                <span role="img">🤔</span> Cool, couldn't that deadlock?
+                <span role="img">🤔</span> Wait, couldn't that deadlock?
               </p>
             </div>
-            <p>You mean like:</p>
+            <p>
+              React is pretty good about not letting you shoot yourself in the
+              foot; however:
+            </p>
             <pre>
-              <code>{`if (asd.down) setState(true) // forever?`}</code>
+              <code>{`useEffect(() => {
+  if(asd.down) setState(Math.random())
+})`}</code>
             </pre>
             <p>
-              Good eye. It could, if it wasn't for this one small detail: while{' '}
-              <code>pressed</code> returns <code>true</code> for as long as the
-              rule matches, <code className="special">down</code> and{' '}
+              would be an infinite loop if it wasn't for this one small detail:
+              while <code>pressed</code> returns <code>true</code> for as long
+              as the rule matches, <code className="special">down</code> and{' '}
               <code className="special">up</code> are special and will only
               return <code>true</code> <mark>once</mark> which guarantees that
               they return <code>false</code> the next time the component
@@ -75,7 +80,7 @@ function App() {
           <section>
             <div className="bubble-wrapper">
               <p className="bubble">
-                <span role="img">🤔</span> What's wrong with event callbacks?
+                <span role="img">🤔</span> Why not just use event callbacks?
               </p>
             </div>
             <p>
@@ -115,10 +120,6 @@ function App() {
               </a>
               .
             </p>
-          </section>
-
-          <section>
-            <p>————</p>
           </section>
 
           <section>

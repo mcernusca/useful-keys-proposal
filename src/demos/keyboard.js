@@ -14,7 +14,7 @@ export default function ASD() {
       right: 'right',
       enter: 'enter'
     },
-    { keyRepeat: true, ignoreCapturedEvents: false }
+    { ignoreCapturedEvents: false }
   )
 
   const classesEsc = cx({

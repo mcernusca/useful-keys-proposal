@@ -28,7 +28,7 @@ import SlideFastRightMP3 from './sounds/slide_fast_right.mp3'
 const SPRING_CONFIG = { friction: 50, tension: 500 }
 
 export default function Grid({ frame, rows, cols, children, dispatch }) {
-  const [isDragging, setIsDragging] = React.useState(true)
+  const [isEditing, setIsEditing] = React.useState(true)
   const [focusKey, setFocusKey] = React.useState(null)
 
   const cellSize = gridSizeForContainerSize(frame.size, rows, cols)
@@ -65,8 +65,6 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
         down,
         shift
       }) => {
-        // if (first) setIsDragging(true)
-        // if (!down) setIsDragging(false)
         if (first) {
           event.target.focus()
         }
@@ -120,7 +118,7 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
   }
   const containFocus = function(event) {
     if (
-      isDragging &&
+      isEditing &&
       canvasRef.current &&
       !canvasRef.current.contains(event.target)
     ) {
@@ -136,14 +134,14 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
         window.document.removeEventListener('focus', containFocus, true)
       }
     },
-    [isDragging]
+    [isEditing]
   )
 
   // Steal focus after we mount
   React.useEffect(() => {
     // This is not so fun with codesandbox...
     const isSandbox = window.location.host.endsWith('sandbox.io')
-    if (isDragging && !isSandbox) {
+    if (isEditing && !isSandbox) {
       getFirstFocusableElement().focus()
     }
   }, [])
@@ -163,77 +161,76 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
   }
 
   // Keyboard
-  const {
-    esc,
-    upArrow,
-    downArrow,
-    leftArrow,
-    rightArrow,
-    enter,
-    shift,
-    tab
-  } = useKeyState({
+  const { esc, enter, shift, tab } = useKeyState({
     esc: 'esc',
-    upArrow: 'up,capture',
-    downArrow: 'down,capture',
-    leftArrow: 'left,capture',
-    rightArrow: 'right,capture',
     enter: 'enter',
     shift: 'shift',
     tab: 'tab'
   })
 
-  // conditional capture?
-  // rightArrow: { keys: ['right', 'left'], capture: isDragging}
-  // filter?
-  if (isDragging && focusKey !== null) {
-    const index = focusKey
-    const frame = childrenArr[index].props.frame
-    let newFrame = frame
-    const ammt = shift.pressed ? 5 : 1
+  const { upArrow, downArrow, leftArrow, rightArrow } = useKeyState(
+    {
+      upArrow: 'up',
+      downArrow: 'down',
+      leftArrow: 'left',
+      rightArrow: 'right'
+    },
+    {
+      ignoreRepeatEvents: false,
+      captureEvents: true
+    }
+  )
 
-    if (esc.down) {
-      setIsDragging(false)
-    } else {
-      if (upArrow.down) {
-        shift.pressed ? Play(slideFastLeftSound, 0.6) : Play(moveSound, 0.6)
-        newFrame = moveV(ammt, -1, newFrame, cols, rows)
-      }
-      if (downArrow.down) {
-        shift.pressed ? Play(slideFastRightSound, 0.6) : Play(moveSound, 0.6)
-        newFrame = moveV(ammt, 1, newFrame, cols, rows)
-      }
-      if (leftArrow.down) {
-        shift.pressed ? Play(slideFastLeftSound, 0.6) : Play(moveSound, 0.6)
-        newFrame = moveH(ammt, -1, newFrame, cols, rows)
-      }
-      if (rightArrow.down) {
-        shift.pressed ? Play(slideFastRightSound, 0.6) : Play(moveSound, 0.6)
-        newFrame = moveH(ammt, 1, newFrame, cols, rows)
-      }
-    }
-    if (tab.down) {
-      Play(focusSound, 0.9)
-    }
+  // Because we're wanting to update component state in response to
+  // keyboard state we use useLayoutEffect to avoid a needless re-render:
+  React.useLayoutEffect(() => {
+    if (isEditing && focusKey !== null) {
+      const index = focusKey
+      const frame = childrenArr[index].props.frame
+      let newFrame = frame
+      const ammt = shift.pressed ? 5 : 1
 
-    if (newFrame !== frame) {
-      dispatch({
-        type: 'move',
-        index: index,
-        payload: newFrame
-      })
+      if (esc.down) {
+        setIsEditing(false)
+      } else {
+        if (upArrow.down) {
+          shift.pressed ? Play(slideFastLeftSound, 0.5) : Play(moveSound, 0.6)
+          newFrame = moveV(ammt, -1, newFrame, cols, rows)
+        }
+        if (downArrow.down) {
+          shift.pressed ? Play(slideFastRightSound, 0.5) : Play(moveSound, 0.6)
+          newFrame = moveV(ammt, 1, newFrame, cols, rows)
+        }
+        if (leftArrow.down) {
+          shift.pressed ? Play(slideFastLeftSound, 0.5) : Play(moveSound, 0.6)
+          newFrame = moveH(ammt, -1, newFrame, cols, rows)
+        }
+        if (rightArrow.down) {
+          shift.pressed ? Play(slideFastRightSound, 0.5) : Play(moveSound, 0.6)
+          newFrame = moveH(ammt, 1, newFrame, cols, rows)
+        }
+      }
+
+      if (tab.down) {
+        Play(focusSound, 0.9)
+      }
+
+      if (newFrame !== frame) {
+        dispatch({
+          type: 'move',
+          index: index,
+          payload: newFrame
+        })
+      }
+    } else if (enter.down) {
+      setIsEditing(true)
     }
-  } else if (enter.down) {
-    setIsDragging(true)
-  }
+  })
 
   // Resize
   const buildResizeHandles = useResizeHandles(
     useEventCallback(
       ({ args: [index], first, down, sizeDelta: [wDelta, hDelta] }) => {
-        // if (first) setIsDragging(true)
-        // if (!down) setIsDragging(false)
-
         const child = childrenArr[index]
         const {
           size: [w, h],
@@ -295,7 +292,7 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
 
   const canvasClasses = cx({
     'grid-canvas': true,
-    'is-dragging': isDragging
+    'is-dragging': isEditing
   })
 
   return (

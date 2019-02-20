@@ -25,15 +25,12 @@ export default function ASD() {
 
   const audio = useAudio(CompleteMP3)
 
-  const { a, s, d, asd } = useKeyState(
-    {
-      a: 'a',
-      s: 's',
-      d: 'd',
-      asd: 'a+s+d'
-    },
-    { keyRepeat: false }
-  )
+  const { a, s, d, asd } = useKeyState({
+    a: 'a',
+    s: 's',
+    d: 'd',
+    asd: 'a+s+d'
+  })
 
   // Because the changes happen too fast we have to
   // capture the down and up events and update the
