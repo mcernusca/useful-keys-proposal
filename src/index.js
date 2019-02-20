@@ -63,7 +63,7 @@ function App() {
               while <code>pressed</code> returns <code>true</code> for as long
               as the rule matches, <code className="special">down</code> and{' '}
               <code className="special">up</code> are special and will only
-              return <code>true</code> <mark>once</mark> which guarantees that
+              return <code>true</code> <mark>once</mark> — this guarantees that
               they return <code>false</code> the next time the component
               re-renders.{' '}
               <mark>
