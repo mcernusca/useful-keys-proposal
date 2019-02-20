@@ -85,9 +85,9 @@ function App() {
             </div>
             <p>
               Callbacks are fine until you want to base your render logic on the
-              state of the keyboard. This is an experiment to try to make key
-              states stateful but still preserve the semantics of the key up and
-              down events.
+              state of the keyboard. This is an experiment to try to represent
+              key events as state but still preserve the semantics of the key up
+              and down events.
             </p>
             <p>
               Hooks allow us to push external details like callbacks to the
