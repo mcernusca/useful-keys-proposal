@@ -114,7 +114,7 @@ function App() {
             </p>
             <p>
               I'm mostly interested if this resonates.{' '}
-              <a href="https://twitter.com/mcernusca">
+              <a href="https://twitter.com/mcernusca/status/1098306771163197440">
                 Let me know what you think
               </a>
               .
