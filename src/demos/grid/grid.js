@@ -15,7 +15,7 @@ import {
 import cx from 'classnames'
 import { useResizeHandles } from './resize-handles.js'
 import { useEventCallback } from './use-event-callback'
-import { useKeyState } from '../use-key-state'
+import { useKeyState } from 'use-key-state'
 import tabbable from 'tabbable'
 import useAudio, { Play } from '../use-audio'
 
@@ -55,61 +55,65 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
   })
 
   // Drag
-  const bindDragHandlers = useGesture(
-    useEventCallback(
-      ({
-        args: [index],
-        event,
-        first,
-        delta: [xDelta, yDelta],
-        down,
-        shift
-      }) => {
-        if (first) {
-          event.target.focus()
-        }
-
-        const child = childrenArr[index]
-        const childFrame = gridFrameToPxFrame(child.props.frame, cellSize)
-
-        const _origin = [
-          cap(
-            childFrame.origin[0] + xDelta,
-            0,
-            frame.size[0] - childFrame.size[0]
-          ),
-          cap(
-            childFrame.origin[1] + yDelta,
-            0,
-            frame.size[1] - childFrame.size[1]
-          )
-        ]
-        const _originSnap = zipMap(snapToGrid, _origin, cellSize)
-
-        set(
-          i =>
-            index === i && {
-              immediate: down,
-              cursor: down ? 'grabbing' : 'grab',
-              origin: down ? _origin : _originSnap,
-              originSnap: _originSnap
-            }
-        )
-
-        if (!down && (xDelta || yDelta)) {
-          Play(moveSound, 0.6)
-          dispatch({
-            type: 'move',
-            index: index,
-            payload: {
-              origin: zipMap(pxToGrid, _originSnap, cellSize)
-            }
-          })
-        }
+  const onDragAction = useEventCallback(
+    ({
+      args: [index],
+      event,
+      first,
+      delta: [xDelta, yDelta],
+      down,
+      cancel
+    }) => {
+      // Only handle left click
+      if (first && typeof event.button === 'number' && event.button !== 0) {
+        cancel()
+        return
       }
-    )
-  )
+      // Set focus to target element
+      if (first) {
+        event.target.focus()
+      }
 
+      const child = childrenArr[index]
+      const childFrame = gridFrameToPxFrame(child.props.frame, cellSize)
+
+      const _origin = [
+        cap(
+          childFrame.origin[0] + xDelta,
+          0,
+          frame.size[0] - childFrame.size[0]
+        ),
+        cap(
+          childFrame.origin[1] + yDelta,
+          0,
+          frame.size[1] - childFrame.size[1]
+        )
+      ]
+      const _originSnap = zipMap(snapToGrid, _origin, cellSize)
+
+      set(
+        i =>
+          index === i && {
+            immediate: down,
+            cursor: down ? 'grabbing' : 'grab',
+            origin: down ? _origin : _originSnap,
+            originSnap: _originSnap
+          }
+      )
+
+      if (!down && (xDelta || yDelta)) {
+        Play(moveSound, 0.6)
+        dispatch({
+          type: 'move',
+          index: index,
+          payload: {
+            origin: zipMap(pxToGrid, _originSnap, cellSize)
+          }
+        })
+      }
+    }
+  )
+  const bindDragHandlers = useGesture(onDragAction)
   // Contain focus
   // TODO extract
   const canvasRef = React.useRef()

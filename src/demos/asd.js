@@ -1,7 +1,7 @@
 import React from 'react'
 import cx from 'classnames'
 import { useInterval } from './use-interval'
-import { useKeyState } from './use-key-state'
+import { useKeyState } from 'use-key-state'
 import useAudio, { Play } from './use-audio'
 
 import CompleteMP3 from './asd/sounds/complete.mp3'

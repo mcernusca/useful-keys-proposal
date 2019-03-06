@@ -103,17 +103,23 @@ function App() {
               </p>
             </div>
             <p>
-              The{' '}
-              <a href="https://github.com/mcernusca/use-key-state">
-                reference implementation
-              </a>{' '}
-              is self-contained and good enough to meet my needs for these small
-              demos but it isn't yet feature-complete. If you're doing more than
-              playing you might consider wrapping a library you trust in a
-              similar hook.
+              useKeyState is now on{' '}
+              <a href="https://www.npmjs.com/package/use-key-state">npm</a>:
             </p>
             <p>
-              I'm mostly interested if this resonates.{' '}
+              <code>npm install use-key-state --save-dev</code>
+            </p>
+            <p>
+              The{' '}
+              <a href="https://github.com/mcernusca/use-key-state">
+                {' '}
+                implementation
+              </a>{' '}
+              is self-contained and has been solid for me in non-trivial
+              applications. It is however still pre-1.0 so some things may
+              change in the near future!
+            </p>
+            <p>
               <a href="https://twitter.com/mcernusca/status/1098306771163197440">
                 Let me know what you think
               </a>
