@@ -342,7 +342,7 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
                 {...bindFocusHandlers(i)}
                 {...bindDragHandlers(i)}
                 className="grid-item"
-                // tabIndex={0}
+                tabIndex={-1}
                 style={{
                   position: "absolute",
                   cursor: animChildProps.cursor.interpolate(cursor => cursor),
