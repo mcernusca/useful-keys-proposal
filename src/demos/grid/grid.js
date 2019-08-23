@@ -1,7 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useGesture } from 'react-with-gesture'
-import { useSprings, animated } from 'react-spring'
+import React from "react";
+import styled from "styled-components";
+import { useGesture } from "react-with-gesture";
+import { useSprings, animated } from "react-spring";
 import {
   gridFrameToPxFrame,
   gridSizeForContainerSize,
@@ -11,48 +11,48 @@ import {
   pxToGrid,
   moveH,
   moveV
-} from './utils'
-import cx from 'classnames'
-import { useResizeHandles } from './resize-handles.js'
-import { useEventCallback } from './use-event-callback'
-import { useKeyState } from 'use-key-state'
-import tabbable from 'tabbable'
-import useAudio, { Play } from '../use-audio'
+} from "./utils";
+import cx from "classnames";
+import { useResizeHandles } from "./resize-handles.js";
+import { useEventCallback } from "./use-event-callback";
+import { useKeyState } from "use-key-state";
+import tabbable from "tabbable";
+import useAudio, { Play } from "../use-audio";
 
-import FocusMP3 from './sounds/drop.mp3'
-import ResizeMP3 from './sounds/resize.mp3'
-import MoveWAV from './sounds/move.wav'
-import SlideFastLeftMP3 from './sounds/slide_fast_left.mp3'
-import SlideFastRightMP3 from './sounds/slide_fast_right.mp3'
+import FocusMP3 from "./sounds/drop.mp3";
+import ResizeMP3 from "./sounds/resize.mp3";
+import MoveWAV from "./sounds/move.wav";
+import SlideFastLeftMP3 from "./sounds/slide_fast_left.mp3";
+import SlideFastRightMP3 from "./sounds/slide_fast_right.mp3";
 
-const SPRING_CONFIG = { friction: 50, tension: 500 }
+const SPRING_CONFIG = { friction: 50, tension: 500 };
 
 export default function Grid({ frame, rows, cols, children, dispatch }) {
-  const [isEditing, setIsEditing] = React.useState(true)
-  const [focusKey, setFocusKey] = React.useState(null)
+  const [isEditing, setIsEditing] = React.useState(true);
+  const [focusKey, setFocusKey] = React.useState(null);
 
-  const cellSize = gridSizeForContainerSize(frame.size, rows, cols)
-  const childrenArr = React.Children.toArray(children)
+  const cellSize = gridSizeForContainerSize(frame.size, rows, cols);
+  const childrenArr = React.Children.toArray(children);
 
-  const focusSound = useAudio(FocusMP3)
-  const resizeSound = useAudio(ResizeMP3)
-  const moveSound = useAudio(MoveWAV)
-  const slideFastLeftSound = useAudio(SlideFastLeftMP3)
-  const slideFastRightSound = useAudio(SlideFastRightMP3)
+  const focusSound = useAudio(FocusMP3);
+  const resizeSound = useAudio(ResizeMP3);
+  const moveSound = useAudio(MoveWAV);
+  const slideFastLeftSound = useAudio(SlideFastLeftMP3);
+  const slideFastRightSound = useAudio(SlideFastRightMP3);
 
   // Springs
   const [animProps, set] = useSprings(childrenArr.length, index => {
-    const child = childrenArr[index]
-    const childFrame = gridFrameToPxFrame(child.props.frame, cellSize)
+    const child = childrenArr[index];
+    const childFrame = gridFrameToPxFrame(child.props.frame, cellSize);
     return {
-      cursor: 'grab',
+      cursor: "grab",
       origin: childFrame.origin,
       originSnap: childFrame.origin,
       size: childFrame.size,
       sizeSnap: childFrame.size,
       config: SPRING_CONFIG
-    }
-  })
+    };
+  });
 
   // Drag
   const onDragAction = useEventCallback(
@@ -65,17 +65,17 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
       cancel
     }) => {
       // Only handle left click
-      if (first && typeof event.button === 'number' && event.button !== 0) {
-        cancel()
-        return
+      if (first && typeof event.button === "number" && event.button !== 0) {
+        cancel();
+        return;
       }
       // Set focus to target element
       if (first) {
-        event.target.focus()
+        event.target.focus();
       }
 
-      const child = childrenArr[index]
-      const childFrame = gridFrameToPxFrame(child.props.frame, cellSize)
+      const child = childrenArr[index];
+      const childFrame = gridFrameToPxFrame(child.props.frame, cellSize);
 
       const _origin = [
         cap(
@@ -88,165 +88,185 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
           0,
           frame.size[1] - childFrame.size[1]
         )
-      ]
-      const _originSnap = zipMap(snapToGrid, _origin, cellSize)
+      ];
+      const _originSnap = zipMap(snapToGrid, _origin, cellSize);
 
       set(
         i =>
           index === i && {
             immediate: down,
-            cursor: down ? 'grabbing' : 'grab',
+            cursor: down ? "grabbing" : "grab",
             origin: down ? _origin : _originSnap,
             originSnap: _originSnap
           }
-      )
+      );
 
       if (!down && (xDelta || yDelta)) {
-        Play(moveSound, 0.6)
+        Play(moveSound, 0.6);
         dispatch({
-          type: 'move',
+          type: "move",
           index: index,
           payload: {
             origin: zipMap(pxToGrid, _originSnap, cellSize)
           }
-        })
+        });
       }
     }
-  )
-  const bindDragHandlers = useGesture(onDragAction)
+  );
+  const bindDragHandlers = useGesture(onDragAction);
   // Contain focus
   // TODO extract
-  const canvasRef = React.useRef()
+  const canvasRef = React.useRef();
   const getFirstFocusableElement = () => {
-    return tabbable(canvasRef.current)[0] || canvasRef.current
-  }
-  const containFocus = function(event) {
-    if (
-      isEditing &&
-      canvasRef.current &&
-      !canvasRef.current.contains(event.target)
-    ) {
-      event.stopPropagation()
-      event.preventDefault()
-      getFirstFocusableElement().focus()
-    }
-  }
-  React.useEffect(
-    () => {
-      window.document.addEventListener('focus', containFocus, true)
-      return () => {
-        window.document.removeEventListener('focus', containFocus, true)
+    return tabbable(canvasRef.current)[0] || canvasRef.current;
+  };
+  const containFocus = React.useCallback(
+    function(event) {
+      if (
+        isEditing &&
+        canvasRef.current &&
+        !canvasRef.current.contains(event.target)
+      ) {
+        event.stopPropagation();
+        event.preventDefault();
+        getFirstFocusableElement().focus();
       }
     },
     [isEditing]
-  )
+  );
+
+  React.useEffect(() => {
+    window.document.addEventListener("focus", containFocus, true);
+    return () => {
+      window.document.removeEventListener("focus", containFocus, true);
+    };
+  }, [isEditing, containFocus]);
 
   // Steal focus after we mount
   React.useEffect(() => {
     // This is not so fun with codesandbox...
-    const isSandbox = window.location.host.endsWith('sandbox.io')
+    const isSandbox = window.location.host.endsWith("sandbox.io");
     if (isEditing && !isSandbox) {
-      getFirstFocusableElement().focus()
+      getFirstFocusableElement().focus();
     }
-  }, [])
+  }, [isEditing]);
 
   // Keep active focus key so we know what to move
   // when using keyboard.
   // TODO: Think this could be a ref?
   const bindFocusHandlers = function(key) {
     return {
-      onFocus: event => {
-        setFocusKey(key)
+      onFocus: () => {
+        setFocusKey(key);
       },
-      onBlur: event => {
-        setFocusKey(null)
+      onBlur: () => {
+        setFocusKey(null);
       }
-    }
-  }
+    };
+  };
 
   // Keyboard
   const { esc, enter, shift, tab } = useKeyState({
-    esc: 'esc',
-    enter: 'enter',
-    shift: 'shift',
-    tab: 'tab'
-  })
+    esc: "esc",
+    enter: "enter",
+    shift: "shift",
+    tab: "tab"
+  });
 
   const { upArrow, downArrow, leftArrow, rightArrow } = useKeyState(
     {
-      upArrow: 'up',
-      downArrow: 'down',
-      leftArrow: 'left',
-      rightArrow: 'right'
+      upArrow: "up",
+      downArrow: "down",
+      leftArrow: "left",
+      rightArrow: "right"
     },
     {
       ignoreRepeatEvents: false,
       captureEvents: true
     }
-  )
+  );
 
   // Because we're wanting to update component state in response to
   // keyboard state we use useLayoutEffect to avoid a needless re-render:
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     if (isEditing && focusKey !== null) {
-      const index = focusKey
-      const frame = childrenArr[index].props.frame
-      let newFrame = frame
-      const ammt = shift.pressed ? 5 : 1
+      const index = focusKey;
+      const frame = childrenArr[index].props.frame;
+      let newFrame = frame;
+      const ammt = shift.pressed ? 5 : 1;
 
       if (esc.down) {
-        setIsEditing(false)
+        setIsEditing(false);
       } else {
         if (upArrow.down) {
-          shift.pressed ? Play(slideFastLeftSound, 0.5) : Play(moveSound, 0.6)
-          newFrame = moveV(ammt, -1, newFrame, cols, rows)
+          shift.pressed ? Play(slideFastLeftSound, 0.5) : Play(moveSound, 0.6);
+          newFrame = moveV(ammt, -1, newFrame, cols, rows);
         }
         if (downArrow.down) {
-          shift.pressed ? Play(slideFastRightSound, 0.5) : Play(moveSound, 0.6)
-          newFrame = moveV(ammt, 1, newFrame, cols, rows)
+          shift.pressed ? Play(slideFastRightSound, 0.5) : Play(moveSound, 0.6);
+          newFrame = moveV(ammt, 1, newFrame, cols, rows);
         }
         if (leftArrow.down) {
-          shift.pressed ? Play(slideFastLeftSound, 0.5) : Play(moveSound, 0.6)
-          newFrame = moveH(ammt, -1, newFrame, cols, rows)
+          shift.pressed ? Play(slideFastLeftSound, 0.5) : Play(moveSound, 0.6);
+          newFrame = moveH(ammt, -1, newFrame, cols, rows);
         }
         if (rightArrow.down) {
-          shift.pressed ? Play(slideFastRightSound, 0.5) : Play(moveSound, 0.6)
-          newFrame = moveH(ammt, 1, newFrame, cols, rows)
+          shift.pressed ? Play(slideFastRightSound, 0.5) : Play(moveSound, 0.6);
+          newFrame = moveH(ammt, 1, newFrame, cols, rows);
         }
       }
 
       if (tab.down) {
-        Play(focusSound, 0.9)
+        Play(focusSound, 0.9);
       }
 
       if (newFrame !== frame) {
         dispatch({
-          type: 'move',
+          type: "move",
           index: index,
           payload: newFrame
-        })
+        });
       }
     } else if (enter.down) {
-      setIsEditing(true)
+      setIsEditing(true);
     }
-  })
+  }, [
+    childrenArr,
+    cols,
+    dispatch,
+    downArrow,
+    enter,
+    focusKey,
+    focusSound,
+    isEditing,
+    leftArrow,
+    rightArrow,
+    esc,
+    moveSound,
+    rows,
+    shift,
+    slideFastLeftSound,
+    slideFastRightSound,
+    tab,
+    upArrow
+  ]);
 
   // Resize
   const buildResizeHandles = useResizeHandles(
     useEventCallback(
       ({ args: [index], first, down, sizeDelta: [wDelta, hDelta] }) => {
-        const child = childrenArr[index]
+        const child = childrenArr[index];
         const {
           size: [w, h],
           origin: [x, y]
-        } = gridFrameToPxFrame(child.props.frame, cellSize)
+        } = gridFrameToPxFrame(child.props.frame, cellSize);
 
-        const _origin = [w + wDelta, h + hDelta]
+        const _origin = [w + wDelta, h + hDelta];
         const _size = zipMap(cap, _origin, cellSize, [
           frame.size[0] - x,
           frame.size[1] - y
-        ])
-        const _sizeSnap = zipMap(snapToGrid, _size, cellSize)
+        ]);
+        const _sizeSnap = zipMap(snapToGrid, _size, cellSize);
 
         set(
           i =>
@@ -255,49 +275,46 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
               size: down ? _size : _sizeSnap,
               sizeSnap: _sizeSnap
             }
-        )
+        );
 
         if (!down) {
           if (wDelta || hDelta) {
-            Play(resizeSound, 0.6)
+            Play(resizeSound, 0.6);
           }
           dispatch({
-            type: 'resize',
+            type: "resize",
             index: index,
             payload: {
               size: zipMap(pxToGrid, _sizeSnap, cellSize)
             }
-          })
+          });
         }
       }
     )
-  )
+  );
 
   // Handle model updates
-  React.useEffect(
-    () => {
-      React.Children.map(children, (child, index) => {
-        set(i => {
-          if (i === index) {
-            const childFrame = gridFrameToPxFrame(child.props.frame, cellSize)
-            return {
-              immediate: false,
-              origin: childFrame.origin,
-              originSnap: childFrame.origin,
-              size: childFrame.size,
-              sizeSnap: childFrame.size
-            }
-          }
-        })
-      })
-    },
-    [children]
-  )
+  React.useEffect(() => {
+    React.Children.map(children, (child, index) => {
+      set(i => {
+        if (i === index) {
+          const childFrame = gridFrameToPxFrame(child.props.frame, cellSize);
+          return {
+            immediate: false,
+            origin: childFrame.origin,
+            originSnap: childFrame.origin,
+            size: childFrame.size,
+            sizeSnap: childFrame.size
+          };
+        }
+      });
+    });
+  }, [children, cellSize, set]);
 
   const canvasClasses = cx({
-    'grid-canvas': true,
-    'is-dragging': isEditing
-  })
+    "grid-canvas": true,
+    "is-dragging": isEditing
+  });
 
   return (
     <Canvas
@@ -309,7 +326,7 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
     >
       <RelativeWrapper>
         {React.Children.map(children, (child, i) => {
-          const animChildProps = animProps[i]
+          const animChildProps = animProps[i];
           return (
             <>
               <StickyShadow
@@ -325,9 +342,9 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
                 {...bindFocusHandlers(i)}
                 {...bindDragHandlers(i)}
                 className="grid-item"
-                tabIndex={0}
+                // tabIndex={0}
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   cursor: animChildProps.cursor.interpolate(cursor => cursor),
                   ...interpolateStyles(
                     animChildProps.size,
@@ -339,11 +356,11 @@ export default function Grid({ frame, rows, cols, children, dispatch }) {
                 {buildResizeHandles(i)}
               </animated.div>
             </>
-          )
+          );
         })}
       </RelativeWrapper>
     </Canvas>
-  )
+  );
 }
 
 const interpolateStyles = function(animSize, animOrigin) {
@@ -351,8 +368,8 @@ const interpolateStyles = function(animSize, animOrigin) {
     width: animSize.interpolate((w, _) => `${w}px`),
     height: animSize.interpolate((_, h) => `${h}px`),
     transform: animOrigin.interpolate((x, y) => `translate3d(${x}px,${y}px,0)`)
-  }
-}
+  };
+};
 
 const Canvas = styled.div`
   position: relative;
@@ -367,8 +384,8 @@ const Canvas = styled.div`
   border-radius: 20px;
 
   &.is-dragging {
-    background-size: ${props => props.cellSize[0]}px ${props =>
-  props.cellSize[1]}px
+    background-size: ${props => props.cellSize[0]}px
+      ${props => props.cellSize[1]}px;
     background-image: linear-gradient(
         to right,
         rgba(84, 84, 84, 0.2) 1px,
@@ -376,15 +393,15 @@ const Canvas = styled.div`
       ),
       linear-gradient(to bottom, rgba(84, 84, 84, 0.2) 1px, transparent 1px);
   }
-`
+`;
 const RelativeWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-`
+`;
 const StickyShadow = styled(animated.div)`
   position: absolute;
   background: rgba(84, 84, 84, 0.2);
   will-change: transform, width, height;
   pointer-events: none;
-`
+`;

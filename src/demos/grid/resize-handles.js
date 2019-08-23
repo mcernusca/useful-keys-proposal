@@ -1,6 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useGesture } from 'react-with-gesture'
+import React from "react";
+import styled from "styled-components";
+import { useGesture } from "react-with-gesture";
 
 export const useResizeHandles = function(onResize) {
   // This hook could inject up to 8 different drag handlers,
@@ -12,12 +12,12 @@ export const useResizeHandles = function(onResize) {
   const bindBottomRight = useGesture(
     ({ event, args, first, down, xy, initial }) => {
       if (first) {
-        event.preventDefault()
-        event.stopPropagation()
+        event.preventDefault();
+        event.stopPropagation();
       }
 
-      const xDelta = xy[0] - initial[0]
-      const yDelta = xy[1] - initial[1]
+      const xDelta = xy[0] - initial[0];
+      const yDelta = xy[1] - initial[1];
 
       onResize({
         args: args,
@@ -25,9 +25,9 @@ export const useResizeHandles = function(onResize) {
         down: down,
         originDelta: [0, 0],
         sizeDelta: [xDelta, yDelta]
-      })
+      });
     }
-  )
+  );
 
   // We return a factory function instead of the component itself
   // in order to capture a unique identifier that is passed along to the
@@ -35,22 +35,22 @@ export const useResizeHandles = function(onResize) {
   // multiple components.
   const [factory] = React.useState(() => {
     return args => {
-      return <BottomRightHandle {...bindBottomRight(args)} />
-    }
-  })
-  return factory
-}
+      return <BottomRightHandle {...bindBottomRight(args)} />;
+    };
+  });
+  return factory;
+};
 
 const Handle = styled.div`
   position: absolute;
   pointer-events: auto;
-`
+`;
 
 const CornerHandle = styled(Handle)`
   position: absolute;
   width: 20px;
   height: 20px;
-`
+`;
 const BottomRightHandle = styled(CornerHandle)`
   bottom: 0;
   right: 0;
@@ -64,4 +64,4 @@ const BottomRightHandle = styled(CornerHandle)`
   &:hover {
     opacity: 1;
   }
-`
+`;

@@ -11,9 +11,7 @@ function App() {
   return (
     <div className="split-layout">
       <aside>
-        <div className="sticky">
-          <GridDemo />
-        </div>
+        <GridDemo />
       </aside>
       <main>
         <div className="page">
