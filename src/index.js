@@ -1,17 +1,19 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from "react";
+import ReactDOM from "react-dom";
 
-import ASDDemo from './demos/asd'
-import GridDemo from './demos/grid'
+import ASDDemo from "./demos/asd";
+import GridDemo from "./demos/grid";
 
-import './reset.css'
-import './styles.css'
+import "./reset.css";
+import "./styles.css";
 
 function App() {
   return (
     <div className="split-layout">
       <aside>
-        <GridDemo />
+        <div className="sticky">
+          <GridDemo />
+        </div>
       </aside>
       <main>
         <div className="page">
@@ -25,7 +27,10 @@ function App() {
           <section>
             <div className="bubble-wrapper">
               <p className="bubble">
-                <span role="img">🔑</span> What?
+                <span role="img" aria-label="key emoji">
+                  🔑
+                </span>{" "}
+                What?
               </p>
             </div>
             <p>For example:</p>
@@ -34,8 +39,8 @@ function App() {
             </pre>
             <p>
               Pass it a map of hotkey rules and it hands back one of the same
-              shape. The values are state objects with three boolean properties:{' '}
-              <code>pressed</code>, <code className="special">down</code> and{' '}
+              shape. The values are state objects with three boolean properties:{" "}
+              <code>pressed</code>, <code className="special">down</code> and{" "}
               <code className="special">up</code>. Your component will re-render
               only when a rule starts or stops matching. Try it:
             </p>
@@ -46,7 +51,10 @@ function App() {
           <section>
             <div className="bubble-wrapper">
               <p className="bubble">
-                <span role="img">🤔</span> Wait, couldn't that deadlock?
+                <span role="img" aria-label="skeptical emoji">
+                  🤔
+                </span>{" "}
+                Wait, couldn't that deadlock?
               </p>
             </div>
             <p>
@@ -61,13 +69,13 @@ function App() {
             <p>
               would be an infinite loop if it wasn't for this one small detail:
               while <code>pressed</code> returns <code>true</code> for as long
-              as the rule matches, <code className="special">down</code> and{' '}
+              as the rule matches, <code className="special">down</code> and{" "}
               <code className="special">up</code> are special and will only
               return <code>true</code> <mark>once</mark> — this guarantees that
               they return <code>false</code> the next time the component
-              re-renders.{' '}
+              re-renders.{" "}
               <mark>
-                This is the equivalent of an event callback —{' '}
+                This is the equivalent of an event callback —{" "}
                 <em>you read it, consider yourself notified.</em>
               </mark>
             </p>
@@ -80,7 +88,10 @@ function App() {
           <section>
             <div className="bubble-wrapper">
               <p className="bubble">
-                <span role="img">🤔</span> Why not just use event callbacks?
+                <span role="img" aria-label="skeptical emoji">
+                  🤔
+                </span>{" "}
+                Why not just use event callbacks?
               </p>
             </div>
             <p>
@@ -90,7 +101,7 @@ function App() {
             </p>
             <p>
               Hooks allow us to push external details like callbacks to the
-              periphery <em>(which also makes them very reusable, yay!)</em>{' '}
+              periphery <em>(which also makes them very reusable, yay!)</em>{" "}
               keeping our render code noise free. It lets us pretend the
               component's world is much simpler than it really is.
             </p>
@@ -99,22 +110,25 @@ function App() {
           <section>
             <div className="bubble-wrapper">
               <p className="bubble">
-                <span role="img">🤔</span>Where do I start?
+                <span role="img" aria-label="skeptical emoji">
+                  🤔
+                </span>
+                Where do I start?
               </p>
             </div>
             <p>
-              useKeyState is now on{' '}
+              useKeyState is now on{" "}
               <a href="https://www.npmjs.com/package/use-key-state">npm</a>:
             </p>
             <p>
               <code>npm install use-key-state --save-dev</code>
             </p>
             <p>
-              The{' '}
+              The{" "}
               <a href="https://github.com/mcernusca/use-key-state">
-                {' '}
+                {" "}
                 implementation
-              </a>{' '}
+              </a>{" "}
               is self-contained and has been solid for me in non-trivial
               applications. It is however still pre-1.0 so some things may
               change in the near future!
@@ -132,7 +146,9 @@ function App() {
             <ul>
               <li>
                 <p>
-                  <span role="img">⭐</span>{' '}
+                  <span role="img" aria-label="star emoji">
+                    ⭐
+                  </span>{" "}
                   <a href="https://github.com/mcernusca/use-key-state">
                     github/use-key-state
                   </a>
@@ -140,19 +156,23 @@ function App() {
               </li>
               <li>
                 <p>
-                  <span role="img">🏖️</span>{' '}
+                  <span role="img" aria-label="beach emoji">
+                    🏖️
+                  </span>{" "}
                   <a href="https://codesandbox.io/s/n4o5z6yk3l">
                     codesandbox/example
-                  </a>{' '}
+                  </a>{" "}
                   try it out
                 </p>
               </li>
               <li>
                 <p>
-                  <span role="img">🏖️</span>{' '}
+                  <span role="img" aria-label="beach emoji">
+                    🏖️
+                  </span>{" "}
                   <a href="https://codesandbox.io/s/wypw3x7o5">
                     codesandbox/meta
-                  </a>{' '}
+                  </a>{" "}
                   this website
                 </p>
               </li>
@@ -164,34 +184,34 @@ function App() {
             <ul>
               <li>
                 <p>
-                  <a href="https://twitter.com/0xca0a">Paul Henschel</a>'s{' '}
+                  <a href="https://twitter.com/0xca0a">Paul Henschel</a>'s{" "}
                   <a href="https://github.com/react-spring/react-with-gesture">
                     useGesture
-                  </a>{' '}
+                  </a>{" "}
                   - is the original inspiration. Use this, it is really good.
                 </p>
               </li>
               <li>
                 <p>
-                  <a href="https://twitter.com/dan_abramov">Dan Abramov</a>'s{' '}
+                  <a href="https://twitter.com/dan_abramov">Dan Abramov</a>'s{" "}
                   <a href="https://twitter.com/dan_abramov/status/1058508853216755713">
                     debug UI thread on Twitter
-                  </a>{' '}
+                  </a>{" "}
                   - notice we care about the value as it changes, not the change
                   event. Subtle but important difference.
                 </p>
               </li>
               <li>
                 <p>
-                  Game engines like Unity expose APIs like{' '}
+                  Game engines like Unity expose APIs like{" "}
                   <a href="https://docs.unity3d.com/ScriptReference/Input.GetKeyDown.html">
                     Input.GetKeyDown
-                  </a>{' '}
+                  </a>{" "}
                   that represent the state of the keys at a particular frame. I
-                  have a channel about immediate mode GUIs{' '}
+                  have a channel about immediate mode GUIs{" "}
                   <a href="https://www.are.na/mihai-cernusca/immediate-mode-guis">
                     on are.na
-                  </a>{' '}
+                  </a>{" "}
                   if you'd like to learn more.
                 </p>
               </li>
@@ -200,8 +220,8 @@ function App() {
         </div>
       </main>
     </div>
-  )
+  );
 }
 
-const rootElement = document.getElementById('root')
-ReactDOM.render(<App />, rootElement)
+const rootElement = document.getElementById("root");
+ReactDOM.render(<App />, rootElement);
